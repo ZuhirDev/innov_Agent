@@ -16,6 +16,6 @@
       "@tools/*": ["./src/mastra/tools/*"]
     }
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "src/mastra/agents/.ts"],
   "exclude": ["node_modules", "dist"]
 }

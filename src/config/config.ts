@@ -4,9 +4,9 @@ import { z } from 'zod';
 dotenv.config();
 
 const envSchema = z.object({
-    CIGES_API_URL: z.string().default(''),
     PORT: z.coerce.number().int().positive().default(4111),
     GROQ_API_KEY: z.string().optional(),
+    TAVILY_API_KEY: z.string().optional(),
 
     PG_ID: z.string().default(''),
     PG_HOST: z.string().default(''),
@@ -17,8 +17,6 @@ const envSchema = z.object({
 
     STORAGE_TYPE: z.enum(['pg', 'libsql']).default('libsql'),
     LIBSQL_URL: z.string().default('file:mastra.db'),
-
-    GITHUB_TOKEN: z.string().optional(),
 });
 
 const parsed = envSchema.safeParse(process.env);
@@ -31,9 +29,9 @@ if (!parsed.success) {
 const env = parsed.data;
 
 export interface AppConfig {
-    CIGES_API_URL: string;
     PORT: number;
     GROQ: { API_KEY?: string };
+    TAVILY: { API_KEY?: string };
     PG: {
         ID: string;
         HOST: string;
@@ -46,15 +44,12 @@ export interface AppConfig {
     LIBSQL: {
         URL: string;
     };
-    GITHUB: {
-        TOKEN?: string;
-    };
 }
 
 const CONFIG: AppConfig = {
-    CIGES_API_URL: env.CIGES_API_URL,
     PORT: env.PORT,
     GROQ: { API_KEY: env.GROQ_API_KEY },
+    TAVILY: { API_KEY: env.TAVILY_API_KEY },
     PG: {
         ID: env.PG_ID,
         HOST: env.PG_HOST,
@@ -66,9 +61,6 @@ const CONFIG: AppConfig = {
     STORAGE_TYPE: env.STORAGE_TYPE,
     LIBSQL: {
         URL: env.LIBSQL_URL,
-    },
-    GITHUB: {
-        TOKEN: env.GITHUB_TOKEN,
     },
 };
 

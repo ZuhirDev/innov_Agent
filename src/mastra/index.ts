@@ -4,12 +4,13 @@ import { FileTransport } from '@mastra/loggers/file';
 import { DuckDBStore } from "@mastra/duckdb";
 import { MastraCompositeStore } from '@mastra/core/storage';
 import { Observability, DefaultExporter, CloudExporter, SensitiveDataFilter } from '@mastra/observability';
-import { cigesAgent, attachCigesAgentLogging } from '@agents/ciges-agent';
+import { grantsAgent, attachGrantsAgentLogging } from '@agents/grants-agent';
+import { grantsWorkflow } from '../mastra/workflows/grants-workflow';
 import storage from '@/mastra/storage';
 
 export const mastra = new Mastra({
-  workflows: {},
-  agents: { cigesAgent },
+  workflows: { grantsWorkflow },
+  agents: { grantsAgent },
   scorers: {},
   storage: new MastraCompositeStore({
     id: 'agent-storage',
@@ -21,7 +22,7 @@ export const mastra = new Mastra({
   logger: new PinoLogger({
     name: 'Mastra',
     level: 'info',
-    transports: { file: new FileTransport({ path: `/home/zelh392/proyectos/ciges-agent/src/mastra/ciges-agent.log` }) }
+    transports: { file: new FileTransport({ path: "C:\\Users\\zelha\\Desktop\\innov_Agent\\src\\mastra\\grants-agent.log" }) }
   }),
   observability: new Observability({
     configs: {
@@ -40,7 +41,7 @@ export const mastra = new Mastra({
 });
 
 try {
-  attachCigesAgentLogging?.(mastra);
+  attachGrantsAgentLogging?.(mastra);
 } catch (err) {
-  mastra.getLogger()?.error('❌ Failed to attach ciges agent logging', { error: err?.toString?.() || err });
+  mastra.getLogger()?.error('❌ Failed to attach grants agent logging', { error: err?.toString?.() || err });
 }
